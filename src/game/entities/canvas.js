@@ -1,5 +1,6 @@
 import state from "../state/state";
 import { worldToScreen } from "../utils";
+import { TILE_SIZE } from "../consts";
 
 export default function createCanvas() {
   const element = document.createElement("canvas");
@@ -29,16 +30,16 @@ export default function createCanvas() {
       ctx.fillRect(0, 0, w, h);
     },
     drawSprite(sprite, tile) {
-      const { img, w, s } = sprite;
+      const { img, w } = sprite;
       const screen = worldToScreen(tile.x, tile.y, state.camera);
-      const x = s * screen.x;
-      const y = s * screen.y;
-      const cols = Math.ceil(w / s);
+      const x = TILE_SIZE * screen.x;
+      const y = TILE_SIZE * screen.y;
+      const oW = Math.ceil(w / TILE_SIZE);
       const index = tile.id - 1;
-      const colIndex = index % cols;
-      const rowIndex = Math.floor(index / cols);
-      const oX = s * colIndex;
-      const oY = s * rowIndex;
+      const colIndex = index % oW;
+      const rowIndex = Math.floor(index / oW);
+      const oX = TILE_SIZE * colIndex;
+      const oY = TILE_SIZE * rowIndex;
 
       if (
         tile.x < state.camera.x ||
@@ -49,13 +50,27 @@ export default function createCanvas() {
         return;
       }
 
-      ctx.drawImage(img, oX, oY, sprite.s, sprite.s, x, y, s, s);
+      ctx.drawImage(
+        img,
+        oX,
+        oY,
+        TILE_SIZE,
+        TILE_SIZE,
+        x,
+        y,
+        TILE_SIZE,
+        TILE_SIZE
+      );
 
       if (process.env.NODE_ENV === "development") {
         ctx.font = "10px Arial";
         ctx.textAlign = "center";
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(`${tile.x},${tile.y}`, x + s / 2, y + s / 2);
+        ctx.fillText(
+          `${tile.x},${tile.y}`,
+          x + TILE_SIZE / 2,
+          y + TILE_SIZE / 2
+        );
       }
     },
     destroy() {

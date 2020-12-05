@@ -28,7 +28,6 @@ export async function loadSprites(assets) {
           img,
           w: img.width,
           h: img.height,
-          s: TILE_SIZE,
         };
         resolve();
       };
@@ -50,4 +49,15 @@ export function worldToScreen(worldX, worldY, camera) {
     x: worldX - camera.x,
     y: worldY - camera.y,
   };
+}
+
+export function tileToScreen(x, y, camera) {
+  return {
+    x: (x - camera.x) * TILE_SIZE,
+    y: (y - camera.y) * TILE_SIZE,
+  };
+}
+
+export function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
 }

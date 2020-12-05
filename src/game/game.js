@@ -1,15 +1,17 @@
 import worldSprite from "../assets/sprites/world.png";
-import state from "./state/state";
+import { TILE_SIZE } from "./consts";
 import { loadSprites } from "./utils";
+import state from "./state/state";
 import createCamera from "./entities/camera";
 import createCanvas from "./entities/canvas";
 import createWorld from "./entities/world";
-import { TILE_SIZE } from "./consts";
+import createMouse from "./entities/mouse";
 
 export function createGame() {
   const canvas = createCanvas();
   const camera = createCamera(canvas);
   const world = createWorld(canvas);
+  const mouse = createMouse(canvas);
 
   let nextFrameId;
   loadSprites({ world: worldSprite }).then((sprites) => {
@@ -29,8 +31,10 @@ export function createGame() {
       canvas.ctx.save();
       canvas.ctx.translate(cX, cY);
 
-      // Updates
       // @todo multiple updates per render (depending on tick rate)
+      // Updates
+
+      mouse.update();
       camera.update();
       world.update();
 
@@ -46,6 +50,7 @@ export function createGame() {
       canvas.destroy();
       camera.destroy();
       world.destroy();
+      mouse.destroy();
     },
   };
 }
