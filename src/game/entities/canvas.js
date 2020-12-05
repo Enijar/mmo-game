@@ -17,6 +17,14 @@ export default function createCanvas() {
   return {
     element,
     ctx,
+    update() {
+      const { width: w, height: h } = element;
+      ctx.clearRect(0, 0, w, h);
+
+      // Background
+      ctx.fillStyle = "#333";
+      ctx.fillRect(0, 0, w, h);
+    },
     drawSprite(sprite, tileId, x = 0, y = 0) {
       const { img, w, s } = sprite;
       const cols = Math.ceil(w / s);
