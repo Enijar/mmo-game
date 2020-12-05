@@ -1,6 +1,8 @@
-# App
+# MMO Game
 
-React app.
+> Work in progress – mostly just for fun. Feel free to send a PR if you have any ideas
+
+Multiplayer MMO game running in the browser.
 
 ### Required Software
 

@@ -1,6 +1,5 @@
 import { TILE_SIZE } from "./consts";
 import state from "./state/state";
-import settings from "./settings";
 
 export function rand(min, max) {
   return Math.floor(Math.random() * max) + min;
