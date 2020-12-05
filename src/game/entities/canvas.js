@@ -1,3 +1,6 @@
+import state from "../state/state";
+import { TILE_SIZE } from "../consts";
+
 export default function createCanvas() {
   const element = document.createElement("canvas");
   const ctx = element.getContext("2d");
@@ -25,15 +28,29 @@ export default function createCanvas() {
       ctx.fillStyle = "#333";
       ctx.fillRect(0, 0, w, h);
     },
-    drawSprite(sprite, tileId, x = 0, y = 0) {
-      const { img, w, s } = sprite;
+    drawSprite(sprite, tile) {
+      const { zoom } = state.camera;
+      const { img, s, w } = sprite;
+      const x = s * (tile.x - state.camera.x);
+      const y = s * (tile.y - state.camera.y);
       const cols = Math.ceil(w / s);
-      const index = tileId - 1;
+      const index = tile.id - 1;
       const colIndex = index % cols;
       const rowIndex = Math.floor(index / cols);
       const oX = s * colIndex;
       const oY = s * rowIndex;
-      ctx.drawImage(img, oX, oY, s, s, x, y, s, s);
+      ctx.drawImage(img, oX, oY, s, s, x, y, s * zoom, s * zoom);
+
+      if (process.env.NODE_ENV === "development") {
+        ctx.font = "10px Arial";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(
+          `${tile.x},${tile.y}`,
+          x + TILE_SIZE / 2,
+          y + TILE_SIZE / 2
+        );
+      }
     },
     destroy() {
       window.removeEventListener("resize", onResize);

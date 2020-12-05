@@ -4,4 +4,5 @@ export default {
   height: 5,
   x: 0,
   y: 0,
+  zoom: 1,
 };

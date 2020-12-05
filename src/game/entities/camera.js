@@ -58,6 +58,18 @@ export default function createCamera(canvas) {
             settings.world.width - screenMaxX
           );
         }
+        if (pressedKey === "=") {
+          state.camera.zoom = Math.min(state.camera.zoom + 1, 5);
+          state.pressedKeys = state.pressedKeys.filter(
+            (pressedKey) => pressedKey !== "="
+          );
+        }
+        if (pressedKey === "-") {
+          state.camera.zoom = Math.max(state.camera.zoom - 1, 1);
+          state.pressedKeys = state.pressedKeys.filter(
+            (pressedKey) => pressedKey !== "-"
+          );
+        }
       });
     },
     destroy() {

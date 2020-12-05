@@ -7,9 +7,7 @@ export default function createWorld(canvas) {
       // Map
       // @todo don't render things which fall outside of the screen/camera view
       worldData.tiles.forEach((tile) => {
-        const x = state.sprites.world.s * (tile.x - state.camera.x);
-        const y = state.sprites.world.s * (tile.y - state.camera.y);
-        canvas.drawSprite(state.sprites.world, tile.id, x, y);
+        canvas.drawSprite(state.sprites.world, tile);
       });
     },
     destroy() {
