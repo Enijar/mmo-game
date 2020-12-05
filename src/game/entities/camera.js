@@ -1,6 +1,7 @@
 import { TILE_SIZE } from "../consts";
 import settings from "../settings";
 import state from "../state/state";
+import { getMaxCamera } from "../utils";
 
 export default function createCamera(canvas) {
   function onKeyDown(event) {
@@ -15,19 +16,11 @@ export default function createCamera(canvas) {
   }
 
   function onResize() {
-    const screenMaxX = Math.ceil(canvas.element.width / TILE_SIZE);
-    const screenMaxY = Math.ceil(canvas.element.height / TILE_SIZE);
-
+    const { maxX, maxY } = getMaxCamera();
     state.camera.y = Math.max(state.camera.y, 0);
-    state.camera.y = Math.min(
-      state.camera.y,
-      settings.world.height - screenMaxY
-    );
+    state.camera.y = Math.min(state.camera.y, settings.world.height - maxY);
     state.camera.x = Math.max(state.camera.x, 0);
-    state.camera.x = Math.min(
-      state.camera.x,
-      settings.world.width - screenMaxX
-    );
+    state.camera.x = Math.min(state.camera.x, settings.world.width - maxX);
   }
 
   window.addEventListener("keydown", onKeyDown);
@@ -36,8 +29,20 @@ export default function createCamera(canvas) {
 
   return {
     update() {
-      const screenMaxX = Math.ceil(canvas.element.width / TILE_SIZE);
-      const screenMaxY = Math.ceil(canvas.element.height / TILE_SIZE);
+      const { maxX, maxY } = getMaxCamera();
+      const { width: w, height: h } = canvas.element;
+
+      // If camera size is bigger than screen size, resize camera to fit inside screen
+      if ((state.camera.width + 1) * TILE_SIZE >= w) {
+        state.camera.width = Math.ceil(w / TILE_SIZE) - 1;
+      } else {
+        state.camera.width = settings.camera.width;
+      }
+      if ((state.camera.height + 1) * TILE_SIZE >= h) {
+        state.camera.height = Math.ceil(h / TILE_SIZE) - 1;
+      } else {
+        state.camera.height = settings.camera.height;
+      }
 
       state.pressedKeys.forEach((pressedKey) => {
         if (pressedKey === "w") {
@@ -46,7 +51,7 @@ export default function createCamera(canvas) {
         if (pressedKey === "s") {
           state.camera.y = Math.min(
             state.camera.y + 1,
-            settings.world.height - screenMaxY
+            settings.world.height - maxY
           );
         }
         if (pressedKey === "a") {
@@ -55,7 +60,7 @@ export default function createCamera(canvas) {
         if (pressedKey === "d") {
           state.camera.x = Math.min(
             state.camera.x + 1,
-            settings.world.width - screenMaxX
+            settings.world.width - maxX
           );
         }
         if (pressedKey === "=") {

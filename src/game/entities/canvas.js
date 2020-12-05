@@ -37,6 +37,16 @@ export default function createCanvas() {
       const rowIndex = Math.floor(index / cols);
       const oX = s * colIndex;
       const oY = s * rowIndex;
+
+      if (
+        tile.x < state.camera.x ||
+        tile.x > state.camera.x + state.camera.width ||
+        tile.y < state.camera.y ||
+        tile.y > state.camera.y + state.camera.height
+      ) {
+        return;
+      }
+
       ctx.drawImage(img, oX, oY, sprite.s, sprite.s, x, y, s, s);
 
       if (process.env.NODE_ENV === "development") {

@@ -1,7 +1,9 @@
+import settings from "../settings";
+
 // eslint-disable-next-line
 export default {
-  width: 5,
-  height: 5,
+  width: settings.camera.width,
+  height: settings.camera.height,
   x: 0,
   y: 0,
   zoom: 1,

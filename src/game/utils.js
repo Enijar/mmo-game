@@ -1,4 +1,6 @@
 import { TILE_SIZE } from "./consts";
+import state from "./state/state";
+import settings from "./settings";
 
 export function rand(min, max) {
   return Math.floor(Math.random() * max) + min;
@@ -36,4 +38,10 @@ export async function loadSprites(assets) {
   }
 
   return loadedAssets;
+}
+
+export function getMaxCamera() {
+  const maxX = state.camera.width + Math.ceil(state.camera.width / TILE_SIZE);
+  const maxY = state.camera.height + Math.ceil(state.camera.height / TILE_SIZE);
+  return { maxX, maxY };
 }
