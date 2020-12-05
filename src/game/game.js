@@ -18,6 +18,10 @@ export function createGame() {
 
       canvas.ctx.clearRect(0, 0, w, h);
 
+      // Updates
+      // @todo multiple updates per render (depending on tick rate)
+      camera.update();
+
       // Background
       canvas.ctx.fillStyle = "#333";
       canvas.ctx.fillRect(0, 0, w, h);

@@ -1,4 +1,5 @@
 const state = {
+  pressedKeys: [],
   camera: {
     width: 5,
     height: 5,
