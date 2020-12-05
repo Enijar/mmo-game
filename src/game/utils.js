@@ -44,3 +44,10 @@ export function getMaxCamera() {
   const maxY = state.camera.height + Math.ceil(state.camera.height / TILE_SIZE);
   return { maxX, maxY };
 }
+
+export function worldToScreen(worldX, worldY, camera) {
+  return {
+    x: worldX - camera.x,
+    y: worldY - camera.y,
+  };
+}

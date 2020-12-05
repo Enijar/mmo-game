@@ -1,4 +1,5 @@
 import state from "../state/state";
+import { worldToScreen } from "../utils";
 
 export default function createCanvas() {
   const element = document.createElement("canvas");
@@ -29,8 +30,9 @@ export default function createCanvas() {
     },
     drawSprite(sprite, tile) {
       const { img, w, s } = sprite;
-      const x = s * (tile.x - state.camera.x);
-      const y = s * (tile.y - state.camera.y);
+      const screen = worldToScreen(tile.x, tile.y, state.camera);
+      const x = s * screen.x;
+      const y = s * screen.y;
       const cols = Math.ceil(w / s);
       const index = tile.id - 1;
       const colIndex = index % cols;
