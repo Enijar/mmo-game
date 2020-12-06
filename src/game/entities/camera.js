@@ -1,7 +1,6 @@
-import { TILE_SIZE } from "../consts";
 import settings from "../settings";
 import state from "../state/state";
-import { getMaxCamera } from "../utils";
+import { getMaxCamera, getTileSize } from "../utils";
 
 export default function createCamera(canvas) {
   function onKeyDown(event) {
@@ -31,15 +30,16 @@ export default function createCamera(canvas) {
     update() {
       const { maxX, maxY } = getMaxCamera();
       const { width: w, height: h } = canvas.element;
+      const s = getTileSize();
 
       // If camera size is bigger than screen size, resize camera to fit inside screen
-      if ((state.camera.width + 1) * TILE_SIZE >= w) {
-        state.camera.width = Math.ceil(w / TILE_SIZE) - 1;
+      if ((state.camera.width + 1) * s >= w) {
+        state.camera.width = Math.ceil(w / s) - 1;
       } else {
         state.camera.width = settings.camera.width;
       }
-      if ((state.camera.height + 1) * TILE_SIZE >= h) {
-        state.camera.height = Math.ceil(h / TILE_SIZE) - 1;
+      if ((state.camera.height + 1) * s >= h) {
+        state.camera.height = Math.ceil(h / s) - 1;
       } else {
         state.camera.height = settings.camera.height;
       }
@@ -64,13 +64,19 @@ export default function createCamera(canvas) {
           );
         }
         if (pressedKey === "=") {
-          state.camera.zoom = Math.min(state.camera.zoom + 1, 5);
+          state.camera.zoom = Math.min(
+            state.camera.zoom + settings.camera.zoomIncrement,
+            settings.camera.maxZoom
+          );
           state.pressedKeys = state.pressedKeys.filter(
             (pressedKey) => pressedKey !== "="
           );
         }
         if (pressedKey === "-") {
-          state.camera.zoom = Math.max(state.camera.zoom - 1, 1);
+          state.camera.zoom = Math.max(
+            state.camera.zoom - settings.camera.zoomIncrement,
+            settings.camera.minZoom
+          );
           state.pressedKeys = state.pressedKeys.filter(
             (pressedKey) => pressedKey !== "-"
           );

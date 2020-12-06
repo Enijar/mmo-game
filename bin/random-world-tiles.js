@@ -1,7 +1,17 @@
 import fs from "fs";
 import path from "path";
 import settings from "../src/game/settings";
-import { randomWorldTiles } from "../src/game/utils";
+import { rand } from "../src/game/utils";
+
+function randomWorldTiles(width, height) {
+  const tiles = [];
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      tiles.push({ id: rand(1, 33), y, x });
+    }
+  }
+  return tiles;
+}
 
 const tiles = randomWorldTiles(settings.world.width, settings.world.height);
 

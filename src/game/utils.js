@@ -5,16 +5,6 @@ export function rand(min, max) {
   return Math.floor(Math.random() * max) + min;
 }
 
-export function randomWorldTiles(width, height) {
-  const tiles = [];
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      tiles.push({ id: rand(1, 11), y, x });
-    }
-  }
-  return tiles;
-}
-
 // @todo load in chunks
 export async function loadSprites(assets) {
   const loadedAssets = {};
@@ -39,25 +29,31 @@ export async function loadSprites(assets) {
 }
 
 export function getMaxCamera() {
-  const maxX = state.camera.width + Math.ceil(state.camera.width / TILE_SIZE);
-  const maxY = state.camera.height + Math.ceil(state.camera.height / TILE_SIZE);
+  const s = getTileSize();
+  const maxX = state.camera.width + Math.ceil(state.camera.width / s);
+  const maxY = state.camera.height + Math.ceil(state.camera.height / s);
   return { maxX, maxY };
 }
 
-export function worldToScreen(worldX, worldY, camera) {
+export function worldToScreen(worldX, worldY) {
   return {
-    x: worldX - camera.x,
-    y: worldY - camera.y,
+    x: worldX - state.camera.x,
+    y: worldY - state.camera.y,
   };
 }
 
-export function tileToScreen(x, y, camera) {
+export function tileToScreen(x, y) {
+  const s = getTileSize();
   return {
-    x: (x - camera.x) * TILE_SIZE,
-    y: (y - camera.y) * TILE_SIZE,
+    x: (x - state.camera.x) * s,
+    y: (y - state.camera.y) * s,
   };
 }
 
 export function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
+}
+
+export function getTileSize() {
+  return TILE_SIZE * state.camera.zoom;
 }

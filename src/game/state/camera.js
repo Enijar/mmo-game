@@ -6,5 +6,5 @@ export default {
   height: settings.camera.height,
   x: 0,
   y: 0,
-  zoom: 1,
+  zoom: settings.camera.zoom,
 };

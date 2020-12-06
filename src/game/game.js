@@ -1,6 +1,5 @@
-import worldSprite from "../assets/sprites/world.png";
-import { TILE_SIZE } from "./consts";
-import { loadSprites } from "./utils";
+import sprites from "./sprites";
+import { getTileSize, loadSprites } from "./utils";
 import state from "./state/state";
 import createCamera from "./entities/camera";
 import createCanvas from "./entities/canvas";
@@ -14,15 +13,15 @@ export function createGame() {
   const mouse = createMouse(canvas);
 
   let nextFrameId;
-  loadSprites({ world: worldSprite }).then((sprites) => {
+  loadSprites(sprites).then((sprites) => {
     state.sprites = sprites;
 
     (function render() {
       nextFrameId = requestAnimationFrame(render);
-
       const { width: w, height: h } = canvas.element;
-      const cW = (state.camera.width + 1) * TILE_SIZE;
-      const cH = (state.camera.height + 1) * TILE_SIZE;
+      const s = getTileSize();
+      const cW = (state.camera.width + 1) * s;
+      const cH = (state.camera.height + 1) * s;
       const cX = (w - cW) / 2;
       const cY = (h - cH) / 2;
 
